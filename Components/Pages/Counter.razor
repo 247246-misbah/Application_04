@@ -1,13 +1,38 @@
 ﻿@page "/counter"
-@rendermode InteractiveServer
 
-<PageTitle>Counter</PageTitle>
+<div class="page-wrapper">
+    <div class="counter-card">
+        <div class="card-header">
+            <h3>Interactive Counter</h3>
+            <p class="subtitle">Blazor Data Binding Demo</p>
+        </div>
+        
+        <div class="card-body">
+            <div class="display-section">
+                <span class="label">Current Count</span>
+                <h1 class="count-value">@currentCount</h1>
+            </div>
 
-<h1>Counter</h1>
+            <button class="btn-increment" @onclick="IncrementCount">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Click to Increment
+            </button>
 
-<p role="status">Current count: @currentCount</p>
+            <div class="divider"></div>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+            <div class="input-section">
+                <label for="manualCount">Manually Override Count</label>
+                <div class="input-wrapper">
+                    <input type="number"
+                           id="manualCount"
+                           value="@currentCount"
+                           @oninput="HandleInput"
+                           placeholder="Type a numer..." />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     private int currentCount = 0;
@@ -16,4 +41,144 @@
     {
         currentCount++;
     }
+
+    private void HandleInput(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int parsedValue))
+        {
+            currentCount = parsedValue;
+        }
+    }
 }
+
+<style>
+    :root {
+        --primary: #4f46e5;
+        --primary-hover: #4338ca;
+        --bg-surface: #ffffff;
+        --text-main: #1f2937;
+        --text-muted: #6b7280;
+        --border: #e5e7eb;
+    }
+
+    .page-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 60vh;
+        font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .counter-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 380px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 24px 24px 0 24px;
+        text-align: center;
+    }
+
+        .card-header h3 {
+            margin: 0;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+    .subtitle {
+        margin: 4px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.875rem;
+    }
+
+    .card-body {
+        padding: 24px;
+    }
+
+    .display-section {
+        background: #f9fafb;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        margin-bottom: 20px;
+        border: 1px solid #f3f4f6;
+    }
+
+        .display-section .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+    .count-value {
+        margin: 8px 0 0 0;
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1;
+    }
+
+    .btn-increment {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+        .btn-increment:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-increment:active {
+            transform: scale(0.98);
+        }
+
+    .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 24px 0;
+    }
+
+    .input-section label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-main);
+        margin-bottom: 8px;
+    }
+
+    .input-wrapper input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 1rem;
+        outline: none;
+        box-sizing: border-box;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+</style>
